@@ -3,7 +3,7 @@ empty orbital ==>  [0,0] ;
 half full orbital ==> [1,0] ;
 full orbital ==> [1,1]
 * */
-const {flatten} = require('lodash')
+const {flatten} = require('lodash');
 
 const numberOfOrbitals = (n, l = []) => {
 
@@ -41,7 +41,7 @@ const orbitalTypes = (l) => {
         case 6:
             return "i";
         case 7 :
-            return "j"
+            return "j";
 
         default:
             return null
@@ -72,7 +72,7 @@ const orbitalValues = (subshell) => {
         case "i":
             return 6;
         case "j" :
-            return 7
+            return 7;
 
         default:
             return null
@@ -84,14 +84,10 @@ const totalSquares = (l) => {
     return 2 * l + 1
 };
 
-const possibleElectrons = (l, Q = []) => {
-    let x = 2 * (2 * l + 1);
-    while (x > 0) {
-        let z = x--;
-        Q.push(z)
-    }
-    Q.reverse();
-    return Q
+const possibleElectrons = (l) => {
+    //total numbers in subshell
+    return 2 * (2 * l + 1);
+
 };
 
 const magneticNumbers = (l, ml = new Map(), o = [0, 0]) => {
@@ -112,31 +108,28 @@ const principalQuantumNumber = (subshell) => {
 
 const angularQuantumNumber = (subshell) => {
     return orbitalValues(subshell.substr(1))
-}
+};
 
 const subShellEnergy = (subshell) => {
 
-    let n = principalQuantumNumber(subshell)
-    let l = angularQuantumNumber(subshell)
+    let n = principalQuantumNumber(subshell);
+    let l = angularQuantumNumber(subshell);
 
     return n + l
 };
 
 const sortSubShell = (a, b) => {
 
+    let a1 = subShellEnergy(a);
+    let b1 = subShellEnergy(b);
 
-    let a1 = subShellEnergy(a)
-    let b1 = subShellEnergy(b)
-
-    let a2 = principalQuantumNumber(a)
-    let b2 = principalQuantumNumber(b)
+    let a2 = principalQuantumNumber(a);
+    let b2 = principalQuantumNumber(b);
 
     if (a1 > b1) {
         return -1;
-
     } else if (b1 > a1) {
         return 1
-
     } else if (b2 > a2) {
         return 1
     } else if (a2 > b2) {
@@ -147,20 +140,37 @@ const sortSubShell = (a, b) => {
 };
 
 const subShellSequence = () => {
-    n = [1, 2, 3, 4, 5, 6, 7, 8];
-
+    let n = [1, 2, 3, 4, 5, 6, 7, 8];
 
     let seq = n.map((npar) => numberOfOrbitals(npar).map((lpar) => {
-
-
-        let x = npar + orbitalTypes(lpar)
-
-        return x
+        return npar + orbitalTypes(lpar);
     }));
-    let z = flatten(seq)
-    let newSeq = z.sort(sortSubShell)
+    let newSeq = flatten(seq).sort(sortSubShell);
     return newSeq.reverse()
+};
 
+const fillOrbitals = (e, permanent = e) => {
+
+    let totalElectronSeq = subShellSequence()
+        .map((par) => angularQuantumNumber(par))
+        .map((par1) => possibleElectrons(par1));
+
+
+    let reduce = totalElectronSeq.reduce((total, amount) => {
+
+        e = e - amount;
+        if (e > 0) {
+            total.push(amount)
+        }
+        else if (total.reduce((accum, curr) => accum + curr) !== permanent) {
+            total.push(permanent - total.reduce((accum, curr) => accum + curr))
+        }
+
+        return total;
+
+    }, []);
+
+    return reduce
 };
 
 
@@ -176,7 +186,7 @@ module.exports = {
     subShellEnergy,
     sortSubShell,
     subShellSequence,
-
+    fillOrbitals
 };
 
 

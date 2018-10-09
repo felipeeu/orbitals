@@ -11,6 +11,7 @@ const
         subShellEnergy,
         sortSubShell,
         subShellSequence,
+        fillOrbitals
 
     }
         = require('./orbitals');
@@ -85,10 +86,10 @@ describe('Total Squares', () => {
 describe('possible electrons in subshell', () => {
 
     it('case l = 0 ', () => {
-        expect(possibleElectrons(0)).toEqual(expect.arrayContaining([1, 2]))
+        expect(possibleElectrons(0)).toEqual(2)
     });
     it('case l = 3 ', () => {
-        expect(possibleElectrons(3)).toEqual(expect.not.arrayContaining([0, 1, 2]))
+        expect(possibleElectrons(3)).toEqual(14)
     });
 });
 
@@ -146,12 +147,10 @@ describe('Angular quantum number', () => {
 });
 
 
-
-
 describe('subshell sequence', () => {
 
-    test.only('Total sequence  ', () => {
-        expect(subShellSequence(3)).toEqual(4)
+    it('Total sequence  ', () => {
+        expect(subShellSequence()).toEqual( ["1s", "2s", "2p", "3s", "3p", "4s", "3d", "4p", "5s", "4d", "5p", "6s", "4f", "5d", "6p", "7s", "5f", "6d", "7p", "8s", "5g", "6f", "7d", "8p", "6g", "7f", "8d", "6h", "7g", "8f", "7h", "8g", "7i", "8h", "8i", "8j"])
     });
 
 });
@@ -180,4 +179,20 @@ describe('subshell energy', () => {
     it('case 3p ', () => {
         expect(subShellEnergy("3p")).not.toEqual(8)
     });
+});
+
+
+describe('filling orbitals', () => {
+
+    it('case 17 electrons ', () => {
+        expect(fillOrbitals(17)).toStrictEqual([2, 2, 6, 2, 5])
+    });
+
+    it('fail 17 electrons ', () => {
+        expect(fillOrbitals(17)).not.toEqual([2, 2, 6, 2, 6, 2])
+    });
+    it('case 35 electrons ', () => {
+        expect(fillOrbitals(35)).toStrictEqual([2, 2, 6, 2, 6, 2, 10, 5])
+    });
+
 });
