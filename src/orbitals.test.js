@@ -11,7 +11,8 @@ const
         subShellEnergy,
         sortSubShell,
         subShellSequence,
-        fillOrbitals
+        fillOrbitals,
+        distribution
 
     }
         = require('./orbitals');
@@ -184,6 +185,22 @@ describe('subshell energy', () => {
 
 describe('filling orbitals', () => {
 
+    it('case 0 electrons ', () => {
+        expect(fillOrbitals(0)).toStrictEqual([])
+    });
+
+    it('case 1 electrons ', () => {
+        expect(fillOrbitals(1)).toStrictEqual([1])
+    });
+
+    it('case 2 electrons ', () => {
+        expect(fillOrbitals(2)).toStrictEqual([2])
+    });
+
+    it('case 3 electrons ', () => {
+        expect(fillOrbitals(3)).toStrictEqual([2,1])
+    });
+
     it('case 17 electrons ', () => {
         expect(fillOrbitals(17)).toStrictEqual([2, 2, 6, 2, 5])
     });
@@ -195,4 +212,31 @@ describe('filling orbitals', () => {
         expect(fillOrbitals(35)).toStrictEqual([2, 2, 6, 2, 6, 2, 10, 5])
     });
 
+});
+
+describe ('distribution', ()=> {
+
+   it('case 0 electrons', () => {
+        expect(distribution(0)).toEqual( [])
+    });
+
+    it('case 1 electrons', () => {
+        expect(distribution(1)).toEqual( ["1s1"])
+    });
+
+    it('case 2 electrons', () => {
+        expect(distribution(2)).toEqual( ["1s2"])
+    });
+
+    it('case 3 electrons', () => {
+        expect(distribution(3)).toEqual( ["1s2", "2s1"])
+    });
+
+    it('case 12 electrons', () => {
+        expect(distribution(12)).toEqual( ["1s2", "2s2", "2p6", "3s2"])
+    });
+
+    it('case 23 electrons', () => {
+        expect(distribution(23)).toEqual( ["1s2", "2s2", "2p6", "3s2", "3p6", "4s2", "3d3"])
+    })
 });

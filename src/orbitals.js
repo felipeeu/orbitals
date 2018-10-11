@@ -140,11 +140,14 @@ const sortSubShell = (a, b) => {
 };
 
 const subShellSequence = () => {
-    let n = [1, 2, 3, 4, 5, 6, 7, 8];
+    let nArray = [1, 2, 3, 4, 5, 6, 7, 8];
 
-    let seq = n.map((npar) => numberOfOrbitals(npar).map((lpar) => {
-        return npar + orbitalTypes(lpar);
-    }));
+    let seq = nArray
+        .map((nParam) => numberOfOrbitals(nParam)
+            .map((lParam) => {
+                return nParam + orbitalTypes(lParam);
+            }));
+
     let newSeq = flatten(seq).sort(sortSubShell);
     return newSeq.reverse()
 };
@@ -156,6 +159,7 @@ const fillOrbitals = (e, permanent = e) => {
         .map((par1) => possibleElectrons(par1));
 
 
+
     let reduce = totalElectronSeq.reduce((total, amount) => {
 
         e = e - amount;
@@ -163,14 +167,24 @@ const fillOrbitals = (e, permanent = e) => {
             total.push(amount)
         }
         else if (total.reduce((accum, curr) => accum + curr) !== permanent) {
+            //The *total.reduce((accum, curr) => accum + curr)* is the current sum of electrons and *permanent* is the initial total of electrons .
             total.push(permanent - total.reduce((accum, curr) => accum + curr))
         }
 
         return total;
 
-    }, []);
+    }, [0]);
 
-    return reduce
+    return reduce.slice(1)
+
+};
+
+const distribution = (e) => {
+
+     let seqDist = fillOrbitals(e).map((number, index) => {
+        return subShellSequence()[index] + number;
+    });
+    return seqDist
 };
 
 
@@ -186,7 +200,21 @@ module.exports = {
     subShellEnergy,
     sortSubShell,
     subShellSequence,
-    fillOrbitals
+    fillOrbitals,
+    distribution
 };
 
+
+
+
+/*
+  e = e - amount;
+        if (e > 0) {
+            total.push(amount)
+        }
+        else if (total.reduce((accum, curr) => accum + curr) !== permanent) {
+            //The *total.reduce((accum, curr) => accum + curr)* is the current sum of electrons and *permanent* is the initial total of electrons .
+            total.push(permanent - total.reduce((accum, curr) => accum + curr))
+        }
+ */
 
