@@ -7,11 +7,5 @@ You can find the most recent version of this guide [here](https://github.com/fac
 
 This project is a static page that intends to help students to learn about electrons in subshell . The stack of the project includes only ReactJs
 
-## Setup 
-```terminal
-cd orbitals
-npm install
-npm start
-```
-
-Then open http://localhost:3000/ to see the app.
+## Link
+https://felipeeu.github.io/orbitals/
