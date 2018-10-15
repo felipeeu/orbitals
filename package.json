@@ -2,6 +2,7 @@
   "name": "orbitals",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://felipeeu.github.io/orbitals/",
   "dependencies": {
     "lodash": "^4.17.11",
     "react": "^16.5.2",
@@ -12,9 +13,12 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "jest",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "devDependencies": {
+    "gh-pages": "^2.0.1",
     "jest": "^23.6.0"
   }
 }
