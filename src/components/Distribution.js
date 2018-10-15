@@ -21,9 +21,9 @@ export const Distribution = (props) => {
 
 
             {fillOrbitals(electron).map((number, index) =>
-                <h1 key={index}>
+                <h2 key={index}>
                     {subShellSequence()[index]} <sup>{number}</sup>
-                </h1>
+                </h2>
             )}
 
         </div>
